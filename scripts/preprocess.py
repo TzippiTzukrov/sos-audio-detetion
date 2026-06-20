@@ -1,3 +1,11 @@
+"""
+⚠️ DEVELOPMENT SCRIPT - Not for production
+זה סקריפט חד-פעמי להעיבוד נתונים בפיתוח בלבד.
+יעבור מ-data/raw (WAV files) ל-data/processed (mel spectrograms).
+
+ריצה: python scripts/preprocess.py
+"""
+
 import os
 import numpy as np
 import librosa

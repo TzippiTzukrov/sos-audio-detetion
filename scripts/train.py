@@ -1,3 +1,16 @@
+"""
+⚠️ DEVELOPMENT SCRIPT - Not for production
+זה סקריפט לאימון מודל חדש בפיתוח בלבד.
+יוצר מודל Keras שמסווג אודיו לקטגוריות שונות.
+
+דרישות:
+  - data/processed/ חייב להכיל mel spectrograms מ-scripts/preprocess.py
+
+ריצה: python scripts/train.py
+
+פלט: src/sos_model.keras (המודל המאומן)
+"""
+
 import os
 import numpy as np
 from sklearn.model_selection import train_test_split
