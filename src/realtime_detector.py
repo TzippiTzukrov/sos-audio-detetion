@@ -1,18 +1,24 @@
 import numpy as np                              # ספרייה לעבודה עם מערכים ומספרים
 import sounddevice as sd                         # ספרייה להקלטה מהמיקרופון
 from tensorflow import keras                     # מייבא את keras מתוך tensorflow — משמש לטעינת המודל שאימנו
-from audio_utils import extract_melspectrogram   # הפונקציה שהכנו שממירה אודיו לתמונת צליל (mel spectrogram)
+from .audio_utils import extract_melspectrogram
 
-MODEL_PATH = "sos_model.keras"               # הנתיב לקובץ המודל השמור
-CATEGORIES = ["scream", "crying", "explosion", "background"]  # שמות הקטגוריות בסדר שהמודל למד אותן
-SR = 22050                                       # קצב דגימה — 22050 נקודות לשנייה (סטנדרט לאודיו)
+from config import THRESHOLD, SR, CATEGORIES, MODEL_PATH
+                            # רף הביטחון — המודל חייב להיות בטוח ב-50% לפחות כדי להתריע
+                            # קצב דגימה — 22050 נקודות לשנייה (סטנדרט לאודיו)
+                            # הנתיב לקובץ המודל השמור
+                            # שמות הקטגוריות בסדר שהמודל למד אותן
+ 
+                
 DURATION = 2                                     # כמה שניות לכל חלון האזנה
 STEP = 1                                         # כל כמה שניות מתחיל חלון חדש (חפיפה של שנייה אחת)
-THRESHOLD = 0.50                                 # רף הביטחון — המודל חייב להיות בטוח ב-50% לפחות כדי להתריע
 
-model = keras.models.load_model(MODEL_PATH)      # טוען את המודל המאומן מהדיסק לזיכרון
-MEAN, STD = -30.0, 15.0                          # ערכים לנרמול — קירוב של הממוצע וסטיית התקן מנתוני האימון
 
+try:
+    model = keras.models.load_model(MODEL_PATH)
+except FileNotFoundError:
+    print(f"❌ מודל לא נמצא: {MODEL_PATH}")     # טוען את המודל המאומן מהדיסק לזיכרון
+    exit(1)
 
 def process_chunk(audio: np.ndarray) -> None:    # פונקציה שמקבלת חתיכת אודיו ומנתחת אותה
     mel = extract_melspectrogram(audio, sr=SR)    # ממירה את האודיו ל-mel spectrogram (מטריצת תדרים לאורך הזמן)

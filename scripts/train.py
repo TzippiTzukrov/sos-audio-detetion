@@ -18,10 +18,11 @@ from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from tensorflow import keras
 import matplotlib.pyplot as plt
 import librosa
+from config import CATEGORIES, epochs, batch_size
+
 
 PROCESSED_DIR = "data/processed"
 RAW_DIR = "data/raw"
-CATEGORIES = ["scream", "crying", "explosion", "background"]
 
 # ===== טעינת הנתונים =====
 X, y = [], []
@@ -92,8 +93,8 @@ early_stop = keras.callbacks.EarlyStopping(
 # ===== אימון =====
 history = model.fit(
     X_train, y_train,
-    epochs=50,
-    batch_size=32,
+    epochs=epochs,
+    batch_size=batch_size,
     validation_data=(X_test, y_test),
     callbacks=[early_stop]
 )

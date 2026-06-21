@@ -9,19 +9,20 @@
 import os
 import numpy as np
 import librosa
+from config import SR, CATEGORIES, n_mels
+
 
 RAW_DIR = "data/raw"
 PROCESSED_DIR = "data/processed"
-CATEGORIES = ["scream", "crying", "explosion", "background"]
 
 def process_file(file_path):
-    audio, sr = librosa.load(file_path, sr=22050, duration=5.0)
-    target_length = 22050 * 5
+    audio, sr = librosa.load(file_path, sr=SR, duration=5.0)
+    target_length = SR * 5
     if len(audio) < target_length:
         audio = np.pad(audio, (0, target_length - len(audio)))
     else:
         audio = audio[:target_length]
-    mel = librosa.feature.melspectrogram(y=audio, sr=sr, n_mels=128)
+    mel = librosa.feature.melspectrogram(y=audio, sr=sr, n_mels=n_mels)
     return librosa.power_to_db(mel, ref=np.max)
 
 def main():

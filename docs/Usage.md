@@ -154,7 +154,7 @@ THRESHOLD = 0.75  # יותר מחמיר
 אם אתה רוצה להשתמש ב-`realtime_detector` מתוך אפליקציה שלך:
 
 ```python
-from src.audio_utils import extract_melspectrogram
+from src import extract_melspectrogram
 from tensorflow import keras
 
 model = keras.models.load_model("src/sos_model.keras")
